@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="ui grid">
-    <controls @oscType="updateType" id="controls" class="twelve wide centered column"></controls>
+    <controls @oscType="updateType" @slide="slide" id="controls" class="twelve wide centered column"></controls>
     <keyboard @playNote="playNote" @stopNote="stopNote" id="keyboard" class="twelve wide centered column"></keyboard>
   </div>
 </template>
@@ -21,18 +21,35 @@ export default {
   data() {
     return {
       osc1: tempSynth,
-      type: "sine"
+      type: "sine",
+      envelope: { attack: 0.1, decay: 0.1, release: 0.04}
     }
   },
   methods: {
     playNote(freq) {
-      this.osc1.playNote(freq, this.type)
+      this.osc1.playNote(freq, this.envelope, this.type)
     },
     stopNote() {
-      this.osc1.stopNote()
+      this.osc1.stopNote(this.envelope)
     },
     updateType(type) {
       this.type = type
+    },
+    slide(name, value) {
+      switch(name) {
+        case 'Attack':
+          console.log("Name: " + name +", Value: " + value)
+          this.envelope.attack = value
+          break;
+        case 'Decay':
+          console.log("Name: " + name +", Value: " + value)
+          this.envelope.decay = value
+          break;
+        case 'Release':
+          console.log("Name: " + name +", Value: " + value)
+          this.envelope.release = value
+          break;
+      }
     }
   }
 }
@@ -47,7 +64,5 @@ export default {
   color: #2c3e50;
   height: 100%;
 }
-#keyboard {
-  height: 400px;
-}
+
 </style>
