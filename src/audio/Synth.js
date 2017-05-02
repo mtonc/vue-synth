@@ -4,29 +4,33 @@ function Synth() {
   this.ctx = audioCtx;
   this.osc = {}
   this.vol = this.ctx.createGain();
-  this.playNote = function(freq, asdr, type = "sine") {
+  this.filter = this.ctx.createBiquadFilter();
+  this.playNote = function(freq, asdr, filter, type = "sine") {
     this.osc = this.ctx.createOscillator();
     this.osc.frequency.value = freq;
     this.osc.type = type;
     this.vol.gain.value = 0.0;
-    this.osc.connect(this.vol);
+    this.filter.type = filter.type
+    this.filter.frequency.value = 1000;
+    this.filter.gain.value = filter.gain
+    this.osc.connect(this.filter);
+    this.filter.connect(this.vol);
     this.vol.connect(this.ctx.destination);
     this.osc.start();
     this.vol.gain.linearRampToValueAtTime(
       1, this.ctx.currentTime + asdr.attack
     );
     this.vol.gain.linearRampToValueAtTime(
-      0.6, this.ctx.currentTime + asdr.decay
+      asdr.sustain, this.ctx.currentTime + asdr.decay
     );
   }
   this.stopNote = function(asdr) {
-    console.log(asdr);
     this.vol.gain.linearRampToValueAtTime(
-      0, this.ctx.currentTime + asdr.release
+      0.04, this.ctx.currentTime + asdr.release
     );
     this.osc.stop(this.ctx.currentTime + asdr.release);
-  this.osc = {};
-}
+    this.osc = {};
+  }
 }
 
 export default Synth;

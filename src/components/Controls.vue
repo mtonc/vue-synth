@@ -1,8 +1,8 @@
 <template>
   <div class="controls">
   <div class="ui grid row">
-    <div class="three wide column">
-      <select v-model="type" id="osc-type" class="ui dropdown two wide column">
+    <div class="four wide column">
+      <select v-model="type" id="osc-type" class="ui dropdown">
         <option disabled value="">
           Type
         </option>
@@ -20,29 +20,34 @@
         </option>
       </select>
     </div>
-    <asdr @slide="slide" :name="Attack" class="two wide column"></asdr>
-    <asdr @slide="slide" :name="Decay" class="two wide column"></asdr>
-    <asdr @slide="slide" :name="Release" class="two wide column"></asdr>
+    <asdr v-for="slider in envelope" @slide="slide" :envelope="slider.type" :key="slider.type" class="one wide column"></asdr>
+    <bandFilter @filterType="filterType" @slide="slide" class="four wide column"></bandFilter>
   </div>
   </div>
 </template>
 
 <script>
 import Asdr from "./ASDR"
+import BandFilter from './Filter'
 
 export default {
   name: 'controls',
   data () {
     return {
-      type: ""
+      type: "",
+      envelope: [{type:"Attack"},{type:"Decay"},{type: "Sustain"},{type:"Release"}]
     }
   },
   components: {
-    Asdr
+    Asdr,
+    BandFilter
   },
   methods: {
     slide(name, value) {
       this.$emit("slide", name, value)
+    },
+    filterType(value) {
+      this.$emit("filterType", value)
     }
   },
   watch: {

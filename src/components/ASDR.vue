@@ -1,8 +1,8 @@
 <template>
   <div class="asdr">
     <div>
-      {{name}}
-      <div class="time">
+      {{envelope}}
+      <div ref="time" class="time">
       </div>
     </div>
   </div>
@@ -17,20 +17,21 @@ export default {
 
     }
   },
-  props: ["name"],
-  created() {
+  props: ["envelope"],
+  mounted() {
     var vm = this
-    $(document).ready(function(){
-      $(".time").slider({
-        orientation: "vertical",
-        min: 0,
-        max: 2,
-        step: 0.05,
-        slide: function(event, ui) {
-          vm.$emit("slide", vm.name, ui.value)
-        }
-      })
-    });
+    $(this.$refs.time).slider({
+      orientation: "vertical",
+      min: 0,
+      max: 2,
+      step: 0.05,
+      slide: function(event, ui) {
+        vm.$emit("slide", vm.envelope, ui.value)
+      }
+    })
+    if(this.envelope == "Sustain") {
+      $(this.$refs.time).slider("option", "value", 1)
+    }
   }
 }
 
