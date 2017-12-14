@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import { EventBus } from '../audio/event-bus.js';
+
 export default {
   name: 'key',
   data () {
@@ -15,10 +17,10 @@ export default {
   },
   methods: {
     playNote(freq) {
-      this.$emit('playNote', freq)
+      EventBus.$emit('playNote', freq)
     },
     stopNote() {
-      this.$emit('stopNote')
+      EventBus.$emit('stopNote')
     }
   },
   props: ["blackKey", "whiteFreq", "blackFreq"]

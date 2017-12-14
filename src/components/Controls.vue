@@ -21,7 +21,7 @@
       </select>
     </div>
     <asdr v-for="slider in envelope" @slide="slide" :envelope="slider.type" :key="slider.type" class="one wide column"></asdr>
-    <bandFilter @filterType="filterType" @slide="slide" class="four wide column"></bandFilter>
+    <bandFilter @filterType="filterType" @slide="slide" class="three wide column"></bandFilter>
   </div>
   </div>
 </template>

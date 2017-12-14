@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="ui grid">
     <controls @oscType="updateType" @slide="slide" @filterType="filterType" id="controls" class="twelve wide centered column"></controls>
-    <keyboard @playNote="playNote" @stopNote="stopNote" id="keyboard" class="twelve wide centered column"></keyboard>
+    <keyboard id="keyboard" class="twelve wide centered column"></keyboard>
 
   </div>
 </template>
@@ -10,9 +10,12 @@
 import Keyboard from './components/Keyboard'
 import Controls from './components/Controls'
 import Synth from './audio/Synth.js'
-
+import { EventBus } from './audio/event-bus.js';
 
 var tempSynth = new Synth();
+
+EventBus.$on('playNote', this.plyaNote);
+EventBus.$on('stopNote', this.stopNote);
 
 export default {
   name: 'app',
